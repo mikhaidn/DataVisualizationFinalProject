@@ -1,22 +1,26 @@
 async function init(){
+   
+  
+}
+
+async function createTable( idName){
     data = await d3.csv("https://flunky.github.io/cars2017.csv")
-    console.log(data)
+    console.log(idName)
+    xlogCityMPG = d3.scaleLog(10).domain([10,150]).range([0,200])
+    yrange = [0,200]
+    ylogHighwayMPG = d3.scaleLog(10).domain([10,150]).range(yrange)
+    margin = 50;
+    height = 200;
+    tickValues = [10,20,50,100]
+    tickFormat = d3.format("~s")
 
-    var xlogCityMPG = d3.scaleLog(10).domain([10,150]).range([0,200])
-    var yrange = [0,200]
-    var ylogHighwayMPG = d3.scaleLog(10).domain([10,150]).range(yrange)
-    var margin = 50;
-    var height = 200;
-    var tickValues = [10,20,50,100]
-    var tickFormat = d3.format("~s")
+    xs = xlogCityMPG;
+    ys = ylogHighwayMPG;
+    ysInv = d3.scaleLog(10).domain([10,150]).range([yrange[1],yrange[0]]);
+    margin = 50;
+    height = 200;
 
-    var xs = xlogCityMPG;
-    var ys = ylogHighwayMPG;
-    var ysInv = d3.scaleLog(10).domain([10,150]).range([yrange[1],yrange[0]]);
-    var margin = 50;
-    var height = 200;
-
-    var gee = d3.select("svg").append("g")
+    var gee = d3.selectAll(idName).select("svg").append("g")
     .attr("transform","translate("+margin+","+margin+")")
     var rectangles = gee.selectAll("circle").data(data).enter().append("circle")
         .attr("cx", function(d,i){return xs(d.AverageCityMPG)})
@@ -30,4 +34,6 @@ async function init(){
     d3.selectAll("svg").append("g")
         .attr("transform","translate("+margin+","+(height+ margin)+")")
         .call(d3.axisBottom(xs).tickValues(tickValues).tickFormat(tickFormat))
-}
+
+
+} 
